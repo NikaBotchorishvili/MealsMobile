@@ -8,7 +8,7 @@ import { RootStackParamList } from "../types/navigatorParams";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Categories">;
 
-const Categories: React.FC<Props> = ({ navigation }) => {
+const Categories: React.FC<Props> = ({ navigation, route }) => {
 	const pressHandler = (id: string) => {
 		navigation.navigate("Meals", { categoryId: id });
 	};
