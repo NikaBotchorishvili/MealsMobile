@@ -3,17 +3,20 @@ import {
 	Pressable,
 	Text,
 	StyleSheet,
-	Platform,
 	useWindowDimensions,
 } from "react-native";
-import Category from "../../utils/category";
-
+import Category from "../../utils/data/category";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../../types/navigatorParams";
 type Props = {
 	item: Category;
+	onPress: (id: string) => void;
 };
 
-const Tile: React.FC<Props> = ({ item }) => {
+const Tile: React.FC<Props> = ({ item, onPress }) => {
 	const { height } = useWindowDimensions();
+	const navigator = useNavigation<NavigationProp<RootStackParamList>>();
+
 	return (
 		<View
 			style={[
@@ -24,7 +27,12 @@ const Tile: React.FC<Props> = ({ item }) => {
 				},
 			]}
 		>
-			<Pressable style={({ pressed }) => [pressed && styles.tapItem]}>
+			<Pressable
+				style={({ pressed }) => [pressed && styles.tapItem]}
+				onPress={() => {
+					navigator.navigate("Meals", { categoryId: item.id });
+				}}
+			>
 				<View style={[{ backgroundColor: item.color }, styles.item]}>
 					<Text style={styles.itemText}>{item.title}</Text>
 				</View>
