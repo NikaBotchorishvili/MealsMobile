@@ -23,7 +23,13 @@ export default function App() {
 		>
 			<NavigationContainer>
 				<Stack.Navigator initialRouteName="Categories">
-					<Stack.Screen name="Categories" component={Categories} />
+					<Stack.Screen
+						name="Categories"
+						component={Categories}
+						options={{
+							title: "All Categories",
+						}}
+					/>
 					<Stack.Screen name="Meals" component={Meals} />
 					<Stack.Screen name="Meal" component={Meal} />
 				</Stack.Navigator>

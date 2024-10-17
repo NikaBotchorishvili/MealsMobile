@@ -7,12 +7,12 @@ import {
 	Pressable,
 } from "react-native";
 import MealData from "../../utils/data/meal";
-import { intervalToDuration } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../types/navigatorParams";
+import { formatDuration } from "../../utils/formattedDuration";
 
 type Props = {
 	meal: MealData;
@@ -21,16 +21,6 @@ type Props = {
 
 const Meal: React.FC<Props> = ({ meal, passedStyles }) => {
 	const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-	const durationInMillis = meal.duration * 60 * 1000;
-
-	const { hours = 0, minutes = 0 } = intervalToDuration({
-		start: 0,
-		end: durationInMillis,
-	});
-
-	const formattedDuration = `${
-		hours > 0 ? `${hours} hr${hours > 1 ? "s" : ""}` : ""
-	} ${minutes > 0 ? `${minutes} min${minutes > 1 ? "s" : ""}` : ""}`.trim();
 	const handlePress = () => {
 		navigation.navigate("Meal", { mealId: meal.id });
 	};
@@ -51,7 +41,9 @@ const Meal: React.FC<Props> = ({ meal, passedStyles }) => {
 						<Text>
 							<FontAwesomeIcon icon={faClock} />
 						</Text>
-						<Text>{formattedDuration}</Text>
+						<Text>
+							{formatDuration({ duration: meal.duration })}
+						</Text>
 					</View>
 					<View style={[styles.iconSection, styles.center]}>
 						<Text>
