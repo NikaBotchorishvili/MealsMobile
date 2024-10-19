@@ -10,12 +10,9 @@ import Specifics from "../components/Meal/Specifics";
 import Ingredients from "../components/Meal/Ingredients";
 import Steps from "../components/Meal/Steps";
 import { faSackDollar } from "@fortawesome/free-solid-svg-icons";
-import Button from "../components/ui/Button";
 import useStore from "../store/useStore";
 import Toast from "react-native-toast-message";
-import { faStar as filledStar } from "@fortawesome/free-solid-svg-icons";
-import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
-
+import IsFavorite from "../components/ui/isFavorite";
 type MealsScreenProps = NativeStackScreenProps<RootStackParamList, "Meal">;
 
 const Meal: React.FC<MealsScreenProps> = ({ route, navigation }) => {
@@ -63,32 +60,12 @@ const Meal: React.FC<MealsScreenProps> = ({ route, navigation }) => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerRight: () => {
-				return isFavorite ? (
-					<Button onPress={handleFavoriteRecipe} color={color}>
-						<FontAwesomeIcon
-							size={20}
-							style={
-								color !== undefined && {
-									color: "white",
-								}
-							}
-							secondaryColor="white"
-							icon={filledStar}
-						/>
-					</Button>
-				) : (
-					<Button onPress={handleFavoriteRecipe} color={color}>
-						<FontAwesomeIcon
-							size={20}
-							style={
-								color !== undefined && {
-									color: "white",
-								}
-							}
-							secondaryColor="white"
-							icon={emptyStar}
-						/>
-					</Button>
+				return (
+					<IsFavorite
+						handleTap={handleFavoriteRecipe}
+						favorite={isFavorite}
+						color={color}
+					/>
 				);
 			},
 		});

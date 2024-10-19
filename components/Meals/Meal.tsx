@@ -13,6 +13,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../types/navigatorParams";
 import { formatDuration } from "../../utils/formattedDuration";
+import Info from "./Info";
 
 type Props = {
 	meal: MealData;
@@ -36,25 +37,12 @@ const Meal: React.FC<Props> = ({ meal, passedStyles, color }) => {
 		>
 			<View style={{ gap: 10 }}>
 				<Image src={meal.imageUrl} style={styles.image} />
-				<View style={styles.infoSection}>
-					<Text style={[{ color: color, fontWeight: "800" }]}>
-						{meal.title}
-					</Text>
-					<View style={[styles.iconSection, styles.center]}>
-						<Text>
-							<FontAwesomeIcon icon={faClock} />
-						</Text>
-						<Text>
-							{formatDuration({ duration: meal.duration })}
-						</Text>
-					</View>
-					<View style={[styles.iconSection, styles.center]}>
-						<Text>
-							<FontAwesomeIcon icon={faShoppingCart} />
-						</Text>
-						<Text>{meal.ingredients.length} Ingredients</Text>
-					</View>
-				</View>
+				<Info
+					title={meal.title}
+					color={color}
+					duration={meal.duration}
+					ingredients={meal.ingredients}
+				/>
 			</View>
 		</Pressable>
 	);
@@ -74,16 +62,6 @@ const styles = StyleSheet.create({
 		width: "100%",
 		borderRadius: 10,
 		aspectRatio: 1 / 1,
-	},
-	center: {
-		flexDirection: "row",
-		alignItems: "center",
-	},
-	iconSection: {
-		gap: 5,
-	},
-	infoSection: {
-		rowGap: 4,
 	},
 	pressed: {
 		opacity: 0.8,
