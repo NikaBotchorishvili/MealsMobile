@@ -17,12 +17,13 @@ import { formatDuration } from "../../utils/formattedDuration";
 type Props = {
 	meal: MealData;
 	passedStyles: ViewStyle;
+	color: string;
 };
 
-const Meal: React.FC<Props> = ({ meal, passedStyles }) => {
+const Meal: React.FC<Props> = ({ meal, passedStyles, color }) => {
 	const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 	const handlePress = () => {
-		navigation.navigate("Meal", { mealId: meal.id });
+		navigation.navigate("Meal", { mealId: meal.id, color: color });
 	};
 	return (
 		<Pressable
@@ -36,7 +37,9 @@ const Meal: React.FC<Props> = ({ meal, passedStyles }) => {
 			<View style={{ gap: 10 }}>
 				<Image src={meal.imageUrl} style={styles.image} />
 				<View style={styles.infoSection}>
-					<Text>Meals {meal.title}</Text>
+					<Text style={[{ color: color, fontWeight: "800" }]}>
+						{meal.title}
+					</Text>
 					<View style={[styles.iconSection, styles.center]}>
 						<Text>
 							<FontAwesomeIcon icon={faClock} />

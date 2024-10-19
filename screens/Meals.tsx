@@ -1,12 +1,12 @@
 import { FlatList, StyleSheet, useWindowDimensions, View } from "react-native";
-import { MEALS } from "../utils/data/data";
+import { CATEGORIES, MEALS } from "../utils/data/data";
 import Meal from "../components/Meals/Meal";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types/navigatorParams";
 
 type MealsScreenProps = NativeStackScreenProps<RootStackParamList, "Meals">;
 
-const Meals: React.FC<MealsScreenProps> = ({ route }) => {
+const Meals: React.FC<MealsScreenProps> = ({ route, navigation }) => {
 	const { width } = useWindowDimensions();
 	const numColumns = 2;
 	const spacingBetweenElements = 20;
@@ -17,7 +17,9 @@ const Meals: React.FC<MealsScreenProps> = ({ route }) => {
 	const meals = MEALS.filter((meal) =>
 		meal.categoryIds.includes(route.params.categoryId)
 	);
-
+	const color = CATEGORIES.find(
+		(el) => el.id == route.params.categoryId
+	)?.color;
 	return (
 		<View style={styles.container}>
 			<FlatList
@@ -32,6 +34,7 @@ const Meals: React.FC<MealsScreenProps> = ({ route }) => {
 							marginRight: spacingBetweenElements / 2,
 							marginBottom: 15,
 						}}
+						color={color!}
 					/>
 				)}
 				keyExtractor={(item) => item.id}
