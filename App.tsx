@@ -10,6 +10,7 @@ import { RootStackParamList } from "./types/navigatorParams";
 import Meal from "./screens/Meal";
 import { CATEGORIES, MEALS } from "./utils/data/data";
 import DrawerNavigator from "./utils/Navigation/Drawer";
+import Toast from "react-native-toast-message";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -56,29 +57,12 @@ export default function App() {
 					<Stack.Screen
 						name="Meal"
 						component={Meal}
-						options={({ route }) => {
-							const { mealId, color } = route.params;
-
-							const meal = MEALS.find(
-								(meal) => meal.id === mealId
-							);
-							return {
-								headerTitle: () => (
-									<Text
-										style={[
-											styles.title,
-											{ maxWidth: "95%" },
-										]}
-									>
-										{meal!.title}
-									</Text>
-								),
-							};
-						}}
+						options={{ title: "About the meal" }}
 					/>
 				</Stack.Navigator>
 				<StatusBar style="auto" />
 			</NavigationContainer>
+			<Toast />
 		</View>
 	);
 }

@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useLayoutEffect } from "react";
+import React, { useCallback, useLayoutEffect } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../types/navigatorParams";
 import { MEALS } from "../utils/data/data";
@@ -11,22 +11,60 @@ import Ingredients from "../components/Meal/Ingredients";
 import Steps from "../components/Meal/Steps";
 import { faSackDollar } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/ui/Button";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import useStore from "../store/useStore";
+import Toast from "react-native-toast-message";
+import { faStar as filledStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 
 type MealsScreenProps = NativeStackScreenProps<RootStackParamList, "Meal">;
 
 const Meal: React.FC<MealsScreenProps> = ({ route, navigation }) => {
 	const meal = MEALS.find((meal) => meal.id === route.params.mealId)!;
 	const { color } = route.params;
+	const { addFavorite, favorites } = useStore();
 
-	const addRecipe = () => {
-		console.log("Add Recipe");
-	};
+	const isFavorite = favorites.some((favorite) => favorite.id === meal.id);
+	const handleFavoriteRecipe = useCallback(() => {
+		const favorite = isFavorite;
+
+		if (favorite) {
+			Toast.show({
+				type: "info",
+				text1: `${meal.title} removed from favorites`,
+				text2: "You can find it in the favorites tab 🌟",
+				text1Style: {
+					textAlign: "center",
+					fontSize: 17,
+				},
+				text2Style: {
+					textAlign: "center",
+				},
+			});
+		} else {
+			Toast.show({
+				type: "success",
+				text1: `${meal.title} added to favorites`,
+				text2: "You can find it in the favorites tab 🌟",
+				text1Style: {
+					textAlign: "center",
+					fontSize: 17,
+				},
+				text2Style: {
+					textAlign: "center",
+				},
+				autoHide: true,
+				visibilityTime: 3000,
+			});
+		}
+
+		addFavorite(meal);
+	}, [meal, favorites, addFavorite]);
+
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerRight: () => {
-				return (
-					<Button onPress={addRecipe} color={color}>
+				return isFavorite ? (
+					<Button onPress={handleFavoriteRecipe} color={color}>
 						<FontAwesomeIcon
 							size={20}
 							style={
@@ -35,13 +73,26 @@ const Meal: React.FC<MealsScreenProps> = ({ route, navigation }) => {
 								}
 							}
 							secondaryColor="white"
-							icon={faStar}
+							icon={filledStar}
+						/>
+					</Button>
+				) : (
+					<Button onPress={handleFavoriteRecipe} color={color}>
+						<FontAwesomeIcon
+							size={20}
+							style={
+								color !== undefined && {
+									color: "white",
+								}
+							}
+							secondaryColor="white"
+							icon={emptyStar}
 						/>
 					</Button>
 				);
 			},
 		});
-	}, [route]);
+	}, [route, handleFavoriteRecipe, color, navigation]);
 	return (
 		<ScrollView
 			overScrollMode="always"

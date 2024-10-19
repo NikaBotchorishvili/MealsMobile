@@ -10,3 +10,5 @@ export type RootDrawerParamList = {
 	Categories: {};
 	Favorites: {};
 };
+
+export type RootNavigationParamList = RootDrawerParamList & RootStackParamList;

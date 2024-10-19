@@ -6,7 +6,7 @@ import { RootStackParamList } from "../types/navigatorParams";
 
 type MealsScreenProps = NativeStackScreenProps<RootStackParamList, "Meals">;
 
-const Meals: React.FC<MealsScreenProps> = ({ route, navigation }) => {
+const Meals: React.FC<MealsScreenProps> = ({ route }) => {
 	const { width } = useWindowDimensions();
 	const numColumns = 2;
 	const spacingBetweenElements = 20;
